@@ -103,7 +103,7 @@ def validar_estudiante_id(estudiante_id):
 
 def validar_registro_id(registro_id):
     mycursor = mydb.cursor()
-    mycursor.execute("SELECT registro_id FROM registro WHERE estudiante_id = %s", (registro_id,))
+    mycursor.execute("SELECT registro_id FROM registro WHERE registro_id = %s", (registro_id,))
     result = mycursor.fetchone()
     return result is not None
 
@@ -344,7 +344,7 @@ def actualizar_registro(registro_id_entry, selected_field_entry, new_data_entry,
         messagebox.showerror("Error", "Complete todos los campos requeridos", parent=window)
         return
 
-    if campo not in ("Estudiante ID", "Asistente", "Fecha", "Hora"):
+    if campo not in ("estudiante_id", "asistente", "fecha", "hora"):
         messagebox.showerror("Error", "Seleccione una opción válida para Campo", parent=window)
         return
 
@@ -353,19 +353,19 @@ def actualizar_registro(registro_id_entry, selected_field_entry, new_data_entry,
         return
 
     # Validar los nuevos datos según el campo
-    if campo == "Estudiante ID" and not validar_estudiante_id(nuevo_dato):
+    if campo == "estudiante_id" and not validar_estudiante_id(nuevo_dato):
         messagebox.showerror("Error", "El ID del estudiante no es válido", parent=window)
         return
 
-    if campo == "Asistente" and nuevo_dato not in ("1", "0"):
+    if campo == "asistente" and nuevo_dato not in ("1", "0"):
         messagebox.showerror("Error", "Seleccione una opción válida para Asistente", parent=window)
         return
 
-    if campo == "Fecha" and not re.match(r"\d{4}-\d{2}-\d{2}", nuevo_dato):
+    if campo == "fecha" and not re.match(r"\d{4}-\d{2}-\d{2}", nuevo_dato):
         messagebox.showerror("Error", "Ingrese una fecha válida en formato YYYY-MM-DD", parent=window)
         return
 
-    if campo == "Hora" and not re.match(r"\d{2}:\d{2}:\d{2}", nuevo_dato):
+    if campo == "hora" and not re.match(r"\d{2}:\d{2}:\d{2}", nuevo_dato):
         messagebox.showerror("Error", "Ingrese una hora válida en formato HH:MM:SS", parent=window)
         return
 
@@ -398,21 +398,21 @@ def open_update_record():
 
     tk.Label(update_record_window, text="Seleccione el campo a actualizar:").pack(pady=5)
     selected_field = tk.StringVar()
-    tk.Radiobutton(update_record_window, text="Estudiante ID", variable=selected_field, value="Estudiante ID").pack(pady=5)
-    tk.Radiobutton(update_record_window, text="Asistente", variable=selected_field, value="Asistente").pack(pady=5)
-    tk.Radiobutton(update_record_window, text="Fecha", variable=selected_field, value="Fecha").pack(pady=5)
-    tk.Radiobutton(update_record_window, text="Hora", variable=selected_field, value="Hora").pack(pady=5)
+    tk.Radiobutton(update_record_window, text="Estudiante ID", variable=selected_field, value="estudiante_id").pack(pady=5)
+    tk.Radiobutton(update_record_window, text="Asistente", variable=selected_field, value="asistente").pack(pady=5)
+    tk.Radiobutton(update_record_window, text="Fecha", variable=selected_field, value="fecha").pack(pady=5)
+    tk.Radiobutton(update_record_window, text="Hora", variable=selected_field, value="hora").pack(pady=5)
 
     # Función para actualizar el texto de la etiqueta basado en la selección del botón de radio
     def update_label_text():
         field_value = selected_field.get()
-        if field_value == "Estudiante ID":
+        if field_value == "estudiante_id":
             label_text.set("Nuevo dato para ESTUDIANTE ID")
-        elif field_value == "Asistente":
+        elif field_value == "asistente":
             label_text.set("Nuevo dato para ASISTENTE (1 para Asistente, 0 para No Asistente)")
-        elif field_value == "Fecha":
+        elif field_value == "fecha":
             label_text.set("Nuevo dato para FECHA (YYYY-MM-DD)")
-        elif field_value == "Hora":
+        elif field_value == "hora":
             label_text.set("Nuevo dato para HORA (HH:MM:SS)")
         else:
             label_text.set("Nuevo dato para")
